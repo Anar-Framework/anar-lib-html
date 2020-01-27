@@ -1,20 +1,21 @@
-package af.anar.gov.lib.html;
+package af.anar.gov.lib.html.util;
 
 /**
- * An <tt>XStringBuilder</tt> objects wraps a standard Java
- * <tt>StringBuilder</tt> object, providing a superset of
- * <tt>StringBuilder</tt>'s functionality. (<tt>XStringBuilder</tt> cannot
- * actually subclass <tt>StringBuilder</tt>, since <tt>StringBuilder</tt>
- * is final.) Among the additional methods that this class provides are:
+ * An <tt>XStringBuffer</tt> objects wraps a standard Java
+ * <tt>StringBuffer</tt> object, providing a superset of
+ * <tt>StringBuffer</tt>'s functionality. (<tt>XStringBuffer</tt>
+ * cannot actually subclass <tt>StringBuffer</tt>, since
+ * <tt>StringBuffer</tt> is final.) Among the additional methods that this
+ * class provides are:
  *
  * <ul>
  *   <li> A set of {@link #split()} methods, to split the contents of the
  *        buffer on a delimiter
  *   <li> A {@link #delete(String) delete()} method that deletes the first
- *        occurrence of a substring. (<tt>StringBuilder</tt> only provides
+ *        occurrence of a substring. (<tt>StringBuffer</tt> only provides
  *        a <tt>delete()</tt> method that takes a starting and ending index.)
  *   <li> A {@link #replace(String,String) replace()} method that replaces
- *        the first occurrence of a substring. (<tt>StringBuilder</tt> only
+ *        the first occurrence of a substring. (<tt>StringBuffer</tt> only
  *        provides a <tt>replace()</tt> method that takes a starting and
  *        ending index.)
  *   <li> A {@link #replaceAll(String,String) replaceAll()} method to
@@ -24,16 +25,15 @@ package af.anar.gov.lib.html;
  *        {@link #decodeMetacharacters()}.)
  * </ul>
  *
- * <p>Because <tt>XStringBuilder</tt> wraps a <tt>StringBuilder</tt>, it is
- * not thread-safe; but, it is likely to be faster than a
- * <tt>StringBuffer</tt> or an <tt>XStringBuffer</tt>. For applications or
- * methods that must to worry about multiple threads modifying the buffer
- * concurrently, consider using the {@link XStringBuffer} class, instead.
+ * <p>Because <tt>XStringBuffer</tt> wraps a <tt>StringBuffer</tt>, it is
+ * thread-safe, but it can also be slower than a <tt>StringBuilder</tt>.
+ * For applications or methods that don't have to worry about thread safety,
+ * consider using the {@link XStringBuilder} class, instead.
  *
- * @see java.lang.StringBuilder
- * @see XStringBuffer
+ * @see java.lang.StringBuffer
+ * @see XStringBuilder
  */
-public class XStringBuilder extends XStringBufBase
+public class XStringBuffer extends XStringBufBase
 {
     /*----------------------------------------------------------------------*\
                              Private Variables
@@ -42,50 +42,50 @@ public class XStringBuilder extends XStringBufBase
     /**
      * The underlying string buffer.
      */
-    private StringBuilder buf = null;
+    private StringBuffer buf = null;
 
     /*----------------------------------------------------------------------*\
                                 Constructor
     \*----------------------------------------------------------------------*/
 
     /**
-     * Construct an empty <tt>XStringBuilder</tt> object with a default
+     * Construct an empty <tt>XStringBuffer</tt> object with a default
      * initial capacity (the same initial capacity as an empty
-     * <tt>StringBuilder</tt> object).
+     * <tt>StringBuffer</tt> object).
      */
-    public XStringBuilder()
+    public XStringBuffer()
     {
         super();
-        buf = new StringBuilder();
+        buf = new StringBuffer();
     }
 
     /**
-     * Construct an empty <tt>XStringBuilder</tt> object with the specified
+     * Construct an empty <tt>XStringBuffer</tt> object with the specified
      * initial capacity.
      *
      * @param length  The initial capacity
      */
-    public XStringBuilder (int length)
+    public XStringBuffer (int length)
     {
         super();
-        buf = new StringBuilder (length);
+        buf = new StringBuffer (length);
     }
 
     /**
-     * Construct a <tt>XStringBuilder</tt> object so that it represents the
+     * Construct a <tt>XStringBuffer</tt> object so that it represents the
      * same sequence of characters as the <tt>String</tt> argument. (The
-     * <tt>String</tt> contrents are copied into the <tt>XStringBuilder</tt>
+     * <tt>String</tt> contrents are copied into the <tt>XStringBuffer</tt>
      * object.)
      *
      * @param initialContents  The initial contents
      */
-    public XStringBuilder (String initialContents)
+    public XStringBuffer (String initialContents)
     {
         super();
         if (initialContents == null)
-            buf = new StringBuilder ();
+            buf = new StringBuffer ();
         else
-            buf = new StringBuilder (initialContents);
+            buf = new StringBuffer (initialContents);
     }
 
     /*----------------------------------------------------------------------*\
@@ -118,7 +118,7 @@ public class XStringBuilder extends XStringBufBase
      *                                         or greater than or equal to
      *                                         <tt>length()</tt>.
      */
-    public XStringBuilder deleteCharAt (int index)
+    public XStringBuffer deleteCharAt (int index)
             throws StringIndexOutOfBoundsException
     {
         buf.deleteCharAt (index);
@@ -197,7 +197,7 @@ public class XStringBuilder extends XStringBufBase
     }
 
     /**
-     * Set the length of this <tt>XStringBuilder</tt>. This string
+     * Set the length of this <tt>XStringBuffer</tt>. This string
      * buffer is altered to represent a new character sequence whose length
      * is specified by the argument. If the <tt>newLength</tt> argument
      * is less than the current length of the string buffer, the string
@@ -217,15 +217,14 @@ public class XStringBuilder extends XStringBufBase
     }
 
     /**
-     * Attempts to reduce storage used for the character sequence. If the
-     * buffer is larger than necessary to hold its current sequence of
-     * characters, then it may be resized to become more space efficient.
-     * Calling this method may, but is not required to, affect the value
-     * returned by a subsequent call to the {@link #capacity} method.
+     * Return a standard <tt>StringBuffer</tt> containing a copy of the
+     * contents of this buffer.
+     *
+     * @return The string buffer
      */
-    public void trimToSize()
+    public StringBuffer toStringBuffer()
     {
-        buf.trimToSize();
+        return new StringBuffer (buf.toString());
     }
 
     /*----------------------------------------------------------------------*\
@@ -233,7 +232,7 @@ public class XStringBuilder extends XStringBufBase
     \*----------------------------------------------------------------------*/
 
     /**
-     * Get the underlying buffer (e.g., <tt>StringBuilder</tt>,
+     * Get the underlying buffer (e.g., <tt>StringBuffer</tt>,
      * <tt>StringBuilder</tt>) as an <tt>Appender</tt> object.
      *
      * @return the <tt>Appender</tt>
@@ -245,18 +244,18 @@ public class XStringBuilder extends XStringBufBase
 
     /**
      * Get a new instance of the underlying buffer type (e.g.,
-     * <tt>StringBuilder</tt>, <tt>StringBuilder</tt>) as a
+     * <tt>StringBuffer</tt>, <tt>StringBuilder</tt>) as a
      * <tt>CharSequence</tt> object.
      *
      * @return the <tt>Appendable</tt>
      */
     protected CharSequence newBufferAsCharSequence()
     {
-        return new StringBuilder();
+        return new StringBuffer();
     }
 
     /**
-     * Get the underlying buffer (e.g., <tt>StringBuilder</tt>,
+     * Get the underlying buffer (e.g., <tt>StringBuffer</tt>,
      * <tt>StringBuilder</tt>) as a <tt>CharSequence</tt> object.
      *
      * @return the <tt>Appendable</tt>
@@ -268,7 +267,7 @@ public class XStringBuilder extends XStringBufBase
 
     /**
      * Remove the characters in a substring of this
-     * <tt>XStringBuilder</tt>. The substring begins at the specified
+     * <tt>XStringBuffer</tt>. The substring begins at the specified
      * <tt>start</tt> and extends to the character at index
      * <tt>end - 1</tt>, or to the end of the string, if no such
      * character exists. If <tt>start</tt> is equal to <tt>end</tt>,
@@ -323,10 +322,10 @@ public class XStringBuilder extends XStringBufBase
      * characters in the specified <tt>String</tt>. The substring
      * begins at the specified <tt>start</tt> and extends to the
      * character at index <tt>end - 1</tt>, or to the end of the
-     * <tt>XStringBuilder</tt> if no such character exists. First the
+     * <tt>XStringBuffer</tt> if no such character exists. First the
      * characters in the substring are removed and then the specified
      * <tt>String</tt> is inserted at <tt>start</tt>. (The
-     * <tt>XStringBuilder</tt> will be lengthened to accommodate the
+     * <tt>XStringBuffer</tt> will be lengthened to accommodate the
      * specified <tt>String</tt> if necessary.)
      *
      * @param start  The beginning index, inclusive
