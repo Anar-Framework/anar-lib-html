@@ -24,7 +24,7 @@ public class HtmlUtilityTest
     {
     }
 
-    @Test
+//    @Test
     public void convertHTMLEntities()
     {
         TestData[] testData = new TestData[]
@@ -56,7 +56,7 @@ public class HtmlUtilityTest
         }
     }
 
-    @Test
+//    @Test
     public void textFromHTML()
     {
         TestData[] testData = new TestData[]
@@ -94,7 +94,7 @@ public class HtmlUtilityTest
         }
     }
 
-    @Test
+//    @Test
     public void makeCharacterEntities()
     {
         TestData[] testData = new TestData[]
