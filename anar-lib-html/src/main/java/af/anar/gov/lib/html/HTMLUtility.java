@@ -27,7 +27,7 @@ public final class HTMLUtility
     /**
      * Resource bundle containing the character entity code mappings.
      */
-    private static final String BUNDLE_NAME = "org.clapper.util.html.HTMLUtil";
+    private static final String BUNDLE_NAME = "af.anar.gov.lib.html.HTMLUtility";
 
     /*----------------------------------------------------------------------*\
                             Private Data Items
